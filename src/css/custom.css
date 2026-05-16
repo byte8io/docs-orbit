@@ -1,0 +1,313 @@
+/**
+ * Byte8 Orbit — docs theme
+ *
+ * Matches the orbit.byte8.io dashboard aesthetic:
+ *   - Deep near-black background (#0A0A0B)
+ *   - Soft rounded surface panels with hairline borders
+ *   - Orbit orange accent (#F97316) — sits in the "deployment / motion"
+ *     product family, distinct from Pulsar purple (monitoring) and the
+ *     accounting connectors. Matches the dashboard's primary color exactly.
+ *   - Subtle gradients on hover, like the marketing product cards
+ */
+
+/* ============================================================
+   Light mode (kept usable but dark is the default + canonical)
+   ============================================================ */
+:root {
+  --ifm-color-primary: #EA580C;            /* darker orange for AA contrast on white */
+  --ifm-color-primary-dark: #C2410C;
+  --ifm-color-primary-darker: #9A3412;
+  --ifm-color-primary-darkest: #7C2D12;
+  --ifm-color-primary-light: #F97316;
+  --ifm-color-primary-lighter: #FB923C;
+  --ifm-color-primary-lightest: #FDBA74;
+
+  --ifm-background-color: #ffffff;
+  --ifm-background-surface-color: #f8fafc;
+
+  --ifm-font-family-base: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --ifm-font-family-monospace: 'JetBrains Mono', 'SF Mono', Monaco,
+    'Cascadia Code', Consolas, monospace;
+  --ifm-font-size-base: 16px;
+  --ifm-line-height-base: 1.65;
+  --ifm-heading-font-weight: 600;
+
+  --ifm-code-font-size: 88%;
+  --ifm-code-border-radius: 6px;
+  --docusaurus-highlighted-code-line-bg: rgba(249, 115, 22, 0.12);
+
+  --ifm-global-radius: 12px;
+  --ifm-button-border-radius: 999px;
+}
+
+/* ============================================================
+   Dark mode — the primary, canonical theme
+   ============================================================ */
+[data-theme='dark'] {
+  /* Background hierarchy — matches the orbit.byte8.io dashboard */
+  --ifm-background-color: #0A0A0B;
+  --ifm-background-surface-color: #18181B;
+  --ifm-color-emphasis-100: #1f1f23;
+  --ifm-color-emphasis-200: #27272A;
+  --ifm-color-emphasis-300: #3f3f46;
+  --ifm-color-emphasis-1000: #FAFAFA;
+
+  /* Primary accent — Orbit orange palette */
+  --ifm-color-primary: #F97316;            /* dashboard primary */
+  --ifm-color-primary-dark: #EA580C;
+  --ifm-color-primary-darker: #C2410C;
+  --ifm-color-primary-darkest: #9A3412;
+  --ifm-color-primary-light: #FB923C;
+  --ifm-color-primary-lighter: #FDBA74;
+  --ifm-color-primary-lightest: #FED7AA;
+
+  /* Code blocks */
+  --ifm-code-background: #18181B;
+  --docusaurus-highlighted-code-line-bg: rgba(249, 115, 22, 0.14);
+
+  /* Navbar */
+  --ifm-navbar-background-color: rgba(10, 10, 11, 0.85);
+  --ifm-navbar-shadow: none;
+
+  /* Cards / surfaces */
+  --byte8-card-bg: #18181B;
+  --byte8-card-border: rgba(255, 255, 255, 0.06);
+  --byte8-card-border-hover: rgba(249, 115, 22, 0.40);
+}
+
+/* ============================================================
+   Global typography
+   ============================================================ */
+html, body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--ifm-heading-font-weight);
+  letter-spacing: -0.02em;
+}
+
+[data-theme='dark'] body {
+  background-color: var(--ifm-background-color);
+  background-image:
+    radial-gradient(circle at 10% -10%, rgba(249, 115, 22, 0.08), transparent 40%),
+    radial-gradient(circle at 90% 10%, rgba(234, 88, 12, 0.04), transparent 35%);
+  background-attachment: fixed;
+}
+
+/* ============================================================
+   Navbar — matches byte8.io marketing site
+   ============================================================ */
+.navbar {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--byte8-card-border, rgba(0, 0, 0, 0.05));
+}
+
+.navbar__title {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+[data-theme='dark'] .navbar {
+  background-color: rgba(10, 10, 11, 0.85);
+}
+
+/* CTA button on the navbar — pill, orange */
+.navbar-cta-button {
+  background: var(--ifm-color-primary);
+  color: #ffffff !important;
+  padding: 0.4rem 1rem !important;
+  border-radius: 999px;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.navbar-cta-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.30);
+}
+
+/* GitHub icon */
+.header-github-link::before {
+  content: '';
+  width: 22px;
+  height: 22px;
+  display: flex;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23000' d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z'/%3E%3C/svg%3E")
+    no-repeat;
+}
+
+[data-theme='dark'] .header-github-link::before {
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath fill='%23fff' d='M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z'/%3E%3C/svg%3E")
+    no-repeat;
+}
+
+.header-github-link:hover {
+  opacity: 0.7;
+}
+
+/* ============================================================
+   Sidebar — quieter than default
+   ============================================================ */
+[data-theme='dark'] .menu {
+  background-color: transparent;
+}
+
+.menu__link {
+  border-radius: 8px;
+  font-size: 0.92rem;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.menu__link--active {
+  font-weight: 600;
+}
+
+[data-theme='dark'] .menu__link--active:not(.menu__link--sublist) {
+  background: rgba(249, 115, 22, 0.12);
+  color: var(--ifm-color-primary-light);
+}
+
+.menu__list-item-collapsible:hover,
+.menu__link:hover {
+  background: var(--ifm-color-emphasis-100);
+}
+
+/* ============================================================
+   Code blocks
+   ============================================================ */
+pre code {
+  border-radius: var(--ifm-code-border-radius);
+  font-size: 0.875rem;
+}
+
+[data-theme='dark'] .theme-code-block {
+  background-color: #0d0d0f !important;
+  border: 1px solid var(--byte8-card-border);
+}
+
+code {
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+/* ============================================================
+   Admonitions
+   ============================================================ */
+.admonition {
+  border-radius: var(--ifm-global-radius);
+  border-width: 1px;
+  border-style: solid;
+}
+
+[data-theme='dark'] .admonition {
+  background: var(--byte8-card-bg);
+  border-color: var(--byte8-card-border);
+}
+
+[data-theme='dark'] .admonition--note .admonition-icon svg {
+  fill: var(--ifm-color-primary-light);
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.button {
+  font-weight: 600;
+  border-radius: 999px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.30);
+}
+
+.button--primary {
+  background: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+  color: #ffffff;
+}
+
+[data-theme='dark'] .button--primary {
+  background: var(--ifm-color-primary);
+  color: #ffffff;
+}
+
+.button--secondary {
+  background: transparent;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  color: var(--ifm-color-emphasis-1000);
+}
+
+[data-theme='dark'] .button--secondary {
+  background: transparent;
+  color: #FAFAFA;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.footer {
+  background: #050506;
+  border-top: 1px solid var(--byte8-card-border);
+  padding: 3rem 0 2rem;
+}
+
+.footer__title {
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.footer__link-item {
+  font-size: 0.92rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.footer__link-item:hover {
+  color: var(--ifm-color-primary-light);
+  text-decoration: none;
+}
+
+.footer__copyright {
+  margin-top: 2rem;
+  font-size: 0.82rem;
+  color: var(--ifm-color-emphasis-500);
+}
+
+/* ============================================================
+   TOC
+   ============================================================ */
+.table-of-contents {
+  font-size: 0.85rem;
+}
+
+.table-of-contents__link--active {
+  color: var(--ifm-color-primary-light);
+  font-weight: 600;
+}
+
+/* ============================================================
+   Maintenance window chips — used in zero-downtime docs so the
+   screenshots feel native against the dashboard.
+   ============================================================ */
+.mw-chip {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.mw-chip--zerodowntime { background: rgba(16, 185, 129, 0.20); color: #6ee7b7; }
+.mw-chip--migrations   { background: rgba(249, 115, 22, 0.20); color: #fdba74; }
+.mw-chip--drift        { background: rgba(249, 115, 22, 0.20); color: #fdba74; }
+.mw-chip--always       { background: rgba(249, 115, 22, 0.20); color: #fdba74; }
+.mw-chip--rolledback   { background: rgba(239, 68, 68, 0.20); color: #fca5a5; }
