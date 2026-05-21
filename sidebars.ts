@@ -22,6 +22,14 @@ const sidebars: SidebarsConfig = {
         'agent/systemd',
         'agent/self-upgrade',
         'agent/logs',
+        {
+          type: 'category',
+          label: 'Managed hosts',
+          items: [
+            'agent/managed-hosts/overview',
+            'agent/managed-hosts/maxcluster',
+          ],
+        },
       ],
     },
     {
