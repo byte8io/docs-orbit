@@ -32,6 +32,32 @@ http://127.0.0.1/health_check.php
 
 The hostname is `127.0.0.1` because the agent runs on the same host — no need to round-trip through your load balancer, no DNS resolution lag, no nginx caching.
 
+## Behind HTTP Basic Auth or a name-based vhost (v0.7.1+)
+
+The loopback `http://127.0.0.1/health_check.php` is ideal, but two common staging setups break it:
+
+1. **HTTP Basic Auth** — the site is behind `auth_basic` (a staging password wall), so every request is `401`.
+2. **Name-based vhost** — nginx serves the site under `server_name staging.example.com`, so a loopback request with `Host: 127.0.0.1` doesn't match it and lands on the default server block → `404`.
+
+Rather than hand-adding an internal nginx server block, set two optional fields on the environment (Operations tab):
+
+| Field | What the agent sends | Use when |
+|---|---|---|
+| **Health Check Host** | `Host: staging.example.com` | the site is a name-based vhost, so the loopback request routes to the right server block |
+| **Health Check Basic Auth** (`user:pass`) | `Authorization: Basic …` | the endpoint is behind HTTP Basic Auth |
+
+With both set, you keep the fast, dependency-free loopback URL — no public-IP hairpin, no DNS, no TLS. For example, for a staging site at `staging.example.com` behind basic auth:
+
+```
+Health Check URL:        http://127.0.0.1/health_check.php
+Health Check Host:       staging.example.com
+Health Check Basic Auth: deploy:s3cr3t
+```
+
+:::note
+**Health Check Basic Auth** is a secret. It's write-only in the dashboard (never read back — the form shows only whether one is stored) and is stored as text for now (encrypt-at-rest is on the roadmap, same as deploy keys). Needs agent **v0.7.1+** on the host.
+:::
+
 ## What to avoid
 
 | URL | Why it's bad |

@@ -86,6 +86,16 @@ If you really want a destructive full re-init (rebuilds the initial release from
 orbit-agent init --force ...same args as above...
 ```
 
+## Multiple environments on one host
+
+To run more than one environment on the same server (e.g. staging + production), pass `--name <instance>`. It namespaces the config file (`~/orbit-agent.<name>.env`) and the systemd unit (`orbit-agent@<name>.service`), so each environment gets its own agent. Omit `--name` for the standard single-agent install — see [Multiple environments on one host](./multiple-environments.md) for the full guide.
+
+```bash
+orbit-agent init --name staging \
+  --token obt_... --server-url https://orbit.byte8.io \
+  --deploy-path /var/www/example/staging --systemd
+```
+
 ## Flag reference
 
 | Flag | Required | Description |
@@ -94,6 +104,8 @@ orbit-agent init --force ...same args as above...
 | `--server-url` | yes (first run) | Control plane URL. `https://orbit.byte8.io` for SaaS. |
 | `--deploy-path` | yes | Absolute path where the deploy tree lives. Must already exist + be writable by the deploy user. |
 | `--web-user` | recommended | The user PHP-FPM runs as (`www-data`, `nginx`, `php-fpm`). Used for group ownership. Defaults to `www-data` if omitted. |
+| `--name` | no | Instance name for running multiple environments on one host (e.g. `staging`). Namespaces the config file + systemd unit. Omit for the default single-agent install. See [Multiple environments](./multiple-environments.md). |
+| `--systemd` | no | Install + enable the systemd unit and start the agent as part of `init`. Without it, `init` only writes config and you start the agent separately. |
 | `--magento-source` | migration only | Path to the existing Magento install. `init` copies its codebase + extracts shared state. |
 | `--force` | no | Destructive re-init — rebuilds initial release even if the tree exists. |
 | `--skip-perms` | no | Don't run the chgrp/chmod pass. Use only when you've already set up permissions and want `init` to leave the tree untouched. |

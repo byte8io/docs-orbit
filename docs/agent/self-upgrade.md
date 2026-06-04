@@ -32,6 +32,8 @@ Useful one-liner:
 orbit-agent self-upgrade && sudo systemctl restart orbit-agent
 ```
 
+On a host running [multiple environments](./multiple-environments.md), the binary is shared across instances, so upgrade once and restart each named unit: `orbit-agent self-upgrade --name staging` prints the right restart hint (`sudo systemctl restart orbit-agent@staging`).
+
 ### Flags
 
 | Flag | Description |

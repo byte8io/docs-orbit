@@ -44,6 +44,17 @@ sudo orbit-agent init --systemd ...usual flags...
 
 It writes the unit, runs `systemctl daemon-reload`, and enables + starts the service. Equivalent to the manual heredoc above, just one less step. Requires `sudo` because `/etc/systemd/system/` is root-owned.
 
+## v0.7.0+: multiple environments on one host
+
+To run more than one environment on the same server (e.g. staging + production), `orbit-agent init --name <instance> --systemd` installs a **template unit** (`orbit-agent@.service`) and enables an instance from it:
+
+```bash
+orbit-agent init --name staging    --systemd ...flags...   # → orbit-agent@staging.service
+orbit-agent init --name production --systemd ...flags...   # → orbit-agent@production.service
+```
+
+Manage each by instance — `sudo systemctl status orbit-agent@staging`, `sudo systemctl restart orbit-agent@production`, `orbit-agent logs --name staging`. The template's `EnvironmentFile=<home>/orbit-agent.%i.env` selects the right config per instance, which all run as the same OS user. See [Multiple environments on one host](./multiple-environments.md).
+
 ## Verify the agent registered
 
 In the dashboard, the environment row should flip to **online** with a recent `last_seen_at`. From the host:

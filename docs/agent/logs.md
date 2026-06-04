@@ -21,6 +21,17 @@ orbit-agent logs --since "2026-05-15 14:00" --until "2026-05-15 15:00"
 
 On permission errors (the deploy user isn't in `systemd-journal`), it prints the `usermod -aG systemd-journal` fix inline.
 
+### Named instances (v0.7.0+)
+
+On a host running [multiple environments](./multiple-environments.md), pass `--name` to tail a specific instance's journal:
+
+```bash
+orbit-agent logs --name staging                 # → journalctl -u orbit-agent@staging.service
+orbit-agent logs --name production --no-follow -n 500
+```
+
+Without `--name`, `orbit-agent logs` reads `orbit-agent.service` (the default single-agent install) — which won't exist on a host that only has named instances, so always pass `--name` there. The raw equivalent is `journalctl -u orbit-agent@<name> -f`.
+
 ## Direct journalctl
 
 If you prefer the raw tool:
