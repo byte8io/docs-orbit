@@ -30,6 +30,11 @@ orbit-agent init \
 
 Output ends with an "init complete" summary, the nginx snippet, and follow-up instructions.
 
+:::tip
+Putting a second environment on a host that already runs an agent (e.g. staging
+alongside production)? Add `--name <instance>`. See [Multiple environments](./multiple-environments.md).
+:::
+
 ## Migrating an existing install
 
 If you already have a Magento install at, say, `/var/www/legacy-magento`, point `init` at it with `--magento-source`. `init` moves `app/etc/env.php`, `pub/media/`, `var/{log,session,backups,…}` into `shared/`, copies the codebase into `releases/{TIMESTAMP}/`, symlinks shared dirs in, and activates `current → releases/{TIMESTAMP}/`.

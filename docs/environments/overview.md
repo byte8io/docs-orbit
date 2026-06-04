@@ -23,7 +23,7 @@ Common shapes:
 | Per-region | `Production-EU`, `Production-US` |
 | Per-customer SaaS shard | `Customer-A`, `Customer-B`, ... |
 
-Each environment runs its own `orbit-agent` instance on its own host. The control plane fans tasks out per-environment.
+Each environment runs its own `orbit-agent` instance. They often live on separate hosts, but **several can share one host** — the `Prod + staging` shape above is the common case — using the agent's `--name` flag (see [Multiple environments](/docs/agent/multiple-environments)). The control plane fans tasks out per-environment.
 
 ## Creating an environment
 

@@ -60,6 +60,12 @@ orbit-agent init \
 
 `init` creates the `releases/` + `shared/` tree, seeds a default `shared/nginx.conf`, writes config to `~/orbit-agent.env`, and registers with the control plane. See [`orbit-agent init`](/docs/agent/init) for every flag.
 
+:::tip Running staging + production on the same host?
+Orbit can run several agents side by side — pass `--name <instance>` to `init`
+(e.g. `--name staging`, `--name production`). Each gets its own config file and
+systemd unit. See [Multiple environments](/docs/agent/multiple-environments).
+:::
+
 ## 4. Start the agent
 
 Run as a systemd service:

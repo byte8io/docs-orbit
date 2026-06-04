@@ -1,6 +1,7 @@
 ---
 sidebar_position: 6
 title: Multiple environments on one host
+sidebar_label: Multiple environments
 description: Run several orbit-agents on one server (e.g. staging + production) with the --name instance flag and systemd template units.
 ---
 
