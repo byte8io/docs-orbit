@@ -41,7 +41,7 @@ The agent only ever makes **outbound** HTTPS calls — no inbound ports to expos
 ## Where Orbit isn't a fit (yet)
 
 - **PHP-only zero-downtime is current scope.** Database migrations still require a maintenance window — Orbit minimises it (mode flips only around `setup:upgrade`) but doesn't eliminate it. A fail-open traffic-holding proxy is on the roadmap.
-- **Single web-host today.** Multi-host fan-out (one deploy → N agents in parallel) is on the roadmap but not shipped.
+- **One host per deploy.** A single deploy targets one host. Running several *environments* on one host **is** supported (`--name` — see [Multiple environments](/docs/agent/multiple-environments)); what's not shipped is **multi-host fan-out** — one deploy updating N agents across N hosts in parallel (a horizontally-scaled app tier). That's on the roadmap.
 - **Magento 2 only.** Magento 1 is not a target. Other PHP stacks (Symfony, Laravel) might work with the agent but aren't tested.
 
 ## Pricing

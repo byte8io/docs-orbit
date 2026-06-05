@@ -38,8 +38,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           routeBasePath: 'docs',
-          editUrl:
-            'https://github.com/byte8io/docs.orbit.byte8.io/edit/main/',
+          // No editUrl -> no "Edit this page" links (curated docs, not community-edited).
         },
         blog: {
           showReadingTime: true,
@@ -50,8 +49,7 @@ const config: Config = {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          editUrl:
-            'https://github.com/byte8io/docs.orbit.byte8.io/edit/main/',
+          // No editUrl -> no "Edit this page" link on changelog posts.
         },
         theme: {
           customCss: './src/css/custom.css',
