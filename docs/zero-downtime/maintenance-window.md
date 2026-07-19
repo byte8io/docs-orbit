@@ -8,12 +8,13 @@ description: How Orbit decides whether to flip the 503 and how long. The five cl
 
 Every deploy gets stamped with a **maintenance window class** that summarises whether (and how long) the site was returning 503 during the deploy. Stored in the `deployments.maintenance_window` column and rendered as a coloured chip in the dashboard.
 
-The five classes:
+The six classes:
 
 | Class | Chip | When |
 |---|---|---|
 | `none` | <span className="mw-chip mw-chip--zerodowntime">Zero-downtime</span> | No gate flipped maintenance. Site stayed 200 throughout. |
 | `migrations` | <span className="mw-chip mw-chip--migrations">Migrations</span> | `setup:db:status` reported migrations. 503 flips for the `setup:upgrade` window only. |
+| `held` | <span className="mw-chip mw-chip--zerodowntime">Traffic held 14s</span> | Migrations ran with the [traffic hold](./traffic-hold.md) buffer active: transactional requests were parked and replayed; browsing saw the live waiting page. |
 | `drift` | <span className="mw-chip mw-chip--drift">Drift</span> | Module/theme `setup_version` drift detected. `setup:upgrade` ran. 503 only if `maintenance_on_drift = true`. |
 | `always` | <span className="mw-chip mw-chip--always">Always-on</span> | Environment has `always_enable_maintenance = true`. 503 for the whole deploy window. |
 | `failed_rollback` | <span className="mw-chip mw-chip--rolledback">Rolled back</span> | Health check failed post-swap. Auto-rollback fired. |
@@ -37,6 +38,8 @@ Code-only deploy, no migrations needed, no drift, no global maintenance flag. Th
 Window duration ≈ duration of `setup:upgrade`. For a small migration (one column added), ~10–20 seconds. For a large refactor, can be minutes — and it's worth thinking hard about whether you can split it.
 
 Customers hitting the site during the window get the Magento maintenance page (`pub/errors/503.phtml`). If they're already mid-checkout, their session in `shared/var/session/` persists, so they resume normally when the window closes.
+
+Stores that enable [traffic hold](./traffic-hold.md) upgrade this window: checkout/cart requests are parked and replayed instead of hitting the maintenance page, and everyone else sees a live waiting page with a countdown.
 
 ### Forward-compatible migrations
 
