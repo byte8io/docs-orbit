@@ -58,18 +58,13 @@ Parking caps: 2 MB request body, 512 concurrent parked requests — beyond eithe
 
 ## Migration forecast
 
-When a deploy actually needs `setup:upgrade`, the agent diffs the declarative schema (`db_schema.xml`) between the live release and the new one **before the window opens**, classifies each change against MySQL 8's online-DDL behaviour, and sizes it with your real table row counts:
+When a deploy actually needs `setup:upgrade`, [Migration Intelligence](./migration-intelligence.md) diffs the declarative schema between the live release and the new one **before the window opens**, classifies each change against MySQL 8's online-DDL behaviour, and sizes it with your real table row counts:
 
 ```
 Migration analysis: 2 instant, 1 online, 1 blocking; 0 data patch(es); predicted hold ~24s (confidence: high)
-  schema: sales_order_item.weight AddColumn → Instant (~0.1s, 2100000 rows)
-  schema: sales_order_item.label ModifyColumn → Copy (~42.0s, 2100000 rows)
-  ...
 ```
 
-The prediction drives the waiting page's countdown, lands on the deployment record (full change table in the dashboard), and — when it exceeds your hold budget — logs a heads-up so you can schedule the deploy for a quiet window instead.
-
-Data patches (arbitrary PHP under `Setup/Patch/Data/`) can't be statically predicted; changed ones are listed by name and drop the forecast confidence to `low`.
+The prediction drives the waiting page's countdown, lands on the deployment record (full change table in the dashboard), and — when it exceeds your hold budget — logs a heads-up so you can schedule the deploy for a quiet window instead. Full details, the DDL classification matrix, and confidence semantics: [Migration Intelligence](./migration-intelligence.md).
 
 ## The `held` classification
 

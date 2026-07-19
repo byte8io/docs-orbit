@@ -23,6 +23,8 @@ The agent only ever makes **outbound** HTTPS calls — no inbound ports to expos
 - **Atomic releases.** New releases land in `releases/{TIMESTAMP}/` next to the live one. The swap is a single `ln -sfn`. Customers never see a half-built site.
 - **Conditional maintenance mode.** `bin/magento setup:db:status` runs first. No migrations → no `503`. Migrations present → mode flips for the upgrade only, not the whole build.
 - **Automatic rollback.** After the swap, the agent hits your health-check URL. Non-2xx → symlink reverts, cache flushes, maintenance disables. The site is back up before the on-call gets paged.
+- **Traffic hold (opt-in, v0.10.0).** During a migration window, checkout/cart requests are parked in RAM and replayed against the new release; everyone else sees a live waiting page with a countdown — instead of the maintenance 503. Bounded (default 25s budget) and fail-open by construction. ([traffic hold](/docs/zero-downtime/traffic-hold))
+- **Migration Intelligence (v0.10.0).** Before `setup:upgrade` runs, Orbit diffs your declarative schema, classifies each change against MySQL 8's online-DDL behaviour, sizes it with your real table row counts, and predicts how long the migration will block — in the deploy log, before the window opens. ([migration intelligence](/docs/zero-downtime/migration-intelligence))
 - **Module-drift detection.** Bumped a module's `setup_version` without a `db_schema.xml` change? Orbit still notices and runs `setup:upgrade` so registration state matches the deployed code. ([drift detection](/docs/zero-downtime/drift-detection))
 - **Maintenance allowlist.** Whitelist your office IP so you can validate the new release before flipping traffic back. ([allowlist IPs](/docs/zero-downtime/allowlist-ips))
 - **Centrally upgraded.** `orbit-agent self-upgrade` pulls the latest stable build from GitHub. No SSH-and-`sudo apt upgrade` per host.
@@ -34,13 +36,14 @@ The agent only ever makes **outbound** HTTPS calls — no inbound ports to expos
 | Get an environment live in under 30 min | [Quick start](/docs/getting-started/quick-start) |
 | Install the agent on a server you already own | [Install the agent](/docs/agent/install) |
 | Understand the deployment shape | [Zero-downtime overview](/docs/zero-downtime/overview) |
+| Keep checkout alive through DB migrations | [Traffic hold](/docs/zero-downtime/traffic-hold) |
 | Wire CI/CD against the GraphQL API | [Personal Access Tokens](/docs/api/personal-access-tokens) |
 | Migrate an existing single-directory install | [`orbit-agent init`](/docs/agent/init#migrating-an-existing-install) |
 | Diagnose a stuck deploy | [Troubleshooting](/docs/troubleshooting) |
 
 ## Where Orbit isn't a fit (yet)
 
-- **PHP-only zero-downtime is current scope.** Database migrations still require a maintenance window — Orbit minimises it (mode flips only around `setup:upgrade`) but doesn't eliminate it. A fail-open traffic-holding proxy is on the roadmap.
+- **Long, blocking migrations still need planning.** [Traffic hold](/docs/zero-downtime/traffic-hold) makes short migration windows invisible to snippet-wired traffic, and [Migration Intelligence](/docs/zero-downtime/migration-intelligence) tells you the duration in advance — but a genuinely multi-minute `COPY`-class migration exceeds any honest hold budget and deserves a scheduled window (or an [expand/contract restructure](/docs/zero-downtime/maintenance-window#forward-compatible-migrations)). Orbit tells you which case you're in before the window opens; it doesn't pretend the slow case away.
 - **One host per deploy.** A single deploy targets one host. Running several *environments* on one host **is** supported (`--name` — see [Multiple environments](/docs/agent/multiple-environments)); what's not shipped is **multi-host fan-out** — one deploy updating N agents across N hosts in parallel (a horizontally-scaled app tier). That's on the roadmap.
 - **Magento 2 only.** Magento 1 is not a target. Other PHP stacks (Symfony, Laravel) might work with the agent but aren't tested.
 

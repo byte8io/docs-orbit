@@ -23,6 +23,7 @@ const sidebars: SidebarsConfig = {
         'agent/self-upgrade',
         'agent/logs',
         'agent/multiple-environments',
+        'agent/watchdog',
         {
           type: 'category',
           label: 'Managed hosts',
@@ -59,6 +60,7 @@ const sidebars: SidebarsConfig = {
         'zero-downtime/overview',
         'zero-downtime/maintenance-window',
         'zero-downtime/traffic-hold',
+        'zero-downtime/migration-intelligence',
         'zero-downtime/allowlist-ips',
         'zero-downtime/drift-detection',
         'zero-downtime/config-import',
