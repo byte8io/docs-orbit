@@ -61,6 +61,7 @@ const sidebars: SidebarsConfig = {
         'zero-downtime/maintenance-window',
         'zero-downtime/traffic-hold',
         'zero-downtime/migration-intelligence',
+        'zero-downtime/release-safety',
         'zero-downtime/allowlist-ips',
         'zero-downtime/drift-detection',
         'zero-downtime/config-import',
