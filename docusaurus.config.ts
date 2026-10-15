@@ -64,7 +64,6 @@ const config: Config = {
   clientModules: ['./src/clientModules/fix-docsearch-nav.ts'],
 
   themeConfig: {
-    image: 'img/social-card.png',
     colorMode: {
       defaultMode: 'dark',
       disableSwitch: false,
